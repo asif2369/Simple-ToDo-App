@@ -2,6 +2,8 @@
 
 <template>
     <main>
+        <h1>Simple ToDo App</h1>
+        <p class="sub-heading">(With GSAP Animation)</p>
         <input type="text" placeholder="Enter task name..." />
         <ul class="todo-list">
             <li>Task Name 1</li>
@@ -19,6 +21,16 @@ main {
     margin-right: auto;
     height: 100vh;
     text-align: center;
+}
+
+h1 {
+    font-size: 2rem;
+    text-align: center;
+    font-weight: bold;
+}
+
+.sub-heading {
+    margin-bottom: 30px;
 }
 
 .todo-list {
