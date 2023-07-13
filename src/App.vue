@@ -1,14 +1,40 @@
-<script setup></script>
+<script setup>
+import { ref } from "vue";
+
+const taskName = ref("");
+const taskArray = ref([]);
+
+const addTaskToArray = () => {
+    if (taskName.value) {
+        taskArray.value.unshift(taskName.value);
+    }
+    taskName.value = "";
+};
+
+const removeTasks = (taskName) => {
+    taskArray.value = taskArray.value.filter((t) => t != taskName);
+};
+</script>
 
 <template>
     <main>
         <h1>Simple ToDo App</h1>
-        <p class="sub-heading">(With GSAP Animation)</p>
-        <input type="text" placeholder="Enter task name..." />
-        <ul class="todo-list">
-            <li>Task Name 1</li>
-            <li>Task Name 2</li>
-        </ul>
+        <p class="sub-heading">(with simple animation)</p>
+        <input
+            v-model="taskName"
+            type="text"
+            placeholder="Enter task name..."
+            @keypress.enter="addTaskToArray"
+        />
+        <TransitionGroup name="todoList">
+            <li
+                v-for="task in taskArray"
+                :key="task"
+                @click="removeTasks(task)"
+            >
+                {{ task }}
+            </li>
+        </TransitionGroup>
     </main>
 </template>
 
@@ -21,6 +47,7 @@ main {
     margin-right: auto;
     height: 100vh;
     text-align: center;
+    position: relative;
 }
 
 h1 {
@@ -33,20 +60,16 @@ h1 {
     margin-bottom: 30px;
 }
 
-.todo-list {
+li {
     list-style: none;
-    padding: 0;
-    margin: 0;
     font-size: 1.5rem;
-}
-
-.todo-list li {
     border-radius: 12px;
     margin-top: 20px;
     padding: 10px 20px;
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.12);
     text-align: center;
     cursor: pointer;
+    width: 100%;
 }
 
 input {
@@ -57,5 +80,36 @@ input {
     padding: 20px;
     margin-bottom: 20px;
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.12);
+}
+
+/* animations */
+
+.todoList-enter-from {
+    opacity: 0;
+    transform: scale(0.5);
+}
+
+.todoList-enter-to {
+    opacity: 1;
+    transform: scale(1);
+}
+.todoList-enter-active {
+    transition: all 0.5s ease;
+}
+.todoList-leave-from {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.todoList-leave-to {
+    opacity: 0;
+    transform: scale(0);
+}
+.todoList-leave-active {
+    transition: all 0.5s ease;
+    position: absolute;
+}
+.todoList-move {
+    transition: all 0.5s ease;
 }
 </style>
